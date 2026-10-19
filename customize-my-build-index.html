@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Customize My Build — Live Order Form</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f8fd;
+        --bg-soft: #eaf2fc;
+        --card: #ffffff;
+        --ink: #16233a;
+        --ink-soft: #4a5a75;
+        --line: #d5e2f2;
+        --sapphire: #2f6fd0;
+        --sapphire-deep: #1d4f9e;
+        --sapphire-tint: #e3eefc;
+        --gold: #c9971f;
+        --gold-bright: #e9b93c;
+        --gold-soft: #fdf3d7;
+        --silver: #9fb2c8;
+        --shadow: 0 10px 30px rgba(29, 79, 158, 0.10);
+        --shadow-card: 0 3px 14px rgba(29, 79, 158, 0.08);
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0e1626;
+          --bg-soft: #142136;
+          --card: #182740;
+          --ink: #eef4fd;
+          --ink-soft: #b3c4dc;
+          --line: #2b4160;
+          --sapphire: #6ea8f2;
+          --sapphire-deep: #9cc4f8;
+          --sapphire-tint: #1d3355;
+          --gold: #e9b93c;
+          --gold-bright: #f2cd60;
+          --gold-soft: #3a2f10;
+          --silver: #7d93b0;
+          --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+          --shadow-card: 0 3px 14px rgba(0, 0, 0, 0.3);
+          color-scheme: dark;
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        font-family: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(120% 340px at 50% -60px, var(--bg-soft), transparent 70%),
+          var(--bg);
+        color: var(--ink);
+        line-height: 1.45;
+        padding-bottom: calc(118px + env(safe-area-inset-bottom));
+      }
+
+      .wrap { max-width: 560px; margin: 0 auto; padding: 0 18px; }
+
+      /* ---------- Header ---------- */
+      header.hero {
+        position: relative;
+        text-align: center;
+        padding: 38px 22px 8px;
+        overflow: hidden;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", Georgia, serif;
+        font-weight: 700;
+        font-size: clamp(1.9rem, 7.4vw, 2.6rem);
+        line-height: 1.12;
+        margin: 0 0 10px;
+        letter-spacing: 0.01em;
+      }
+      .hero h1 .you {
+        font-style: italic;
+        color: var(--sapphire-deep);
+        border-bottom: 3px solid var(--gold-bright);
+      }
+      .hero p {
+        margin: 0 auto;
+        max-width: 42ch;
+        font-size: 1.06rem;
+        color: var(--ink-soft);
+      }
+      .live-dot {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--sapphire-deep);
+        background: var(--sapphire-tint);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 14px 6px 11px;
+        margin-bottom: 16px;
+      }
+      .live-dot::before {
+        content: "";
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: #e5484d;
+        animation: pulse 1.6s ease-in-out infinite;
+      }
+      @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+      .bfly { position: absolute; color: var(--sapphire); opacity: 0.16; pointer-events: none; }
+      .bfly.b1 { top: 14px; left: 8px; width: 44px; transform: rotate(-14deg); }
+      .bfly.b2 { top: 64px; right: 6px; width: 30px; transform: rotate(18deg); color: var(--gold); opacity: 0.22; }
+      @media (prefers-reduced-motion: no-preference) {
+        .bfly.b1 { animation: drift 7s ease-in-out infinite; }
+        .bfly.b2 { animation: drift 9s ease-in-out infinite reverse; }
+      }
+      @keyframes drift {
+        0%, 100% { translate: 0 0; }
+        50% { translate: 0 -7px; }
+      }
+
+      /* ---------- Fields ---------- */
+      .fields { margin-top: 22px; display: grid; gap: 14px; }
+      .field label {
+        display: block;
+        font-weight: 600;
+        font-size: 1rem;
+        margin-bottom: 6px;
+      }
+      .field input {
+        width: 100%;
+        font: inherit;
+        font-size: 1.05rem;
+        color: var(--ink);
+        background: var(--card);
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+        min-height: 56px;
+      }
+      .field input::placeholder { color: var(--silver); }
+      .field input:focus {
+        outline: none;
+        border-color: var(--sapphire);
+        box-shadow: 0 0 0 3px var(--sapphire-tint);
+      }
+
+      /* ---------- Menu ---------- */
+      .menu-head { margin: 30px 0 4px; }
+      .menu-head h2 {
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 1.45rem;
+        font-weight: 700;
+        margin: 0 0 2px;
+      }
+      .menu-head p { margin: 0; color: var(--ink-soft); font-size: 0.98rem; }
+
+      .cards { display: grid; gap: 12px; margin-top: 16px; }
+
+      .opt {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        text-align: left;
+        font: inherit;
+        color: var(--ink);
+        background: var(--card);
+        border: 2px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        min-height: 76px;
+        cursor: pointer;
+        box-shadow: var(--shadow-card);
+        transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .opt:active { transform: scale(0.985); }
+      .opt:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; }
+
+      .opt .icon {
+        flex: 0 0 auto;
+        width: 48px; height: 48px;
+        border-radius: 12px;
+        background: var(--sapphire-tint);
+        color: var(--sapphire-deep);
+        display: grid;
+        place-items: center;
+      }
+      .opt .icon svg { width: 26px; height: 26px; }
+
+      .opt .txt { flex: 1 1 auto; min-width: 0; }
+      .opt .name { font-weight: 600; font-size: 1.08rem; line-height: 1.2; }
+      .opt .desc { font-size: 0.92rem; color: var(--ink-soft); margin-top: 2px; }
+
+      .opt .price {
+        flex: 0 0 auto;
+        font-weight: 700;
+        font-size: 1.12rem;
+        color: var(--sapphire-deep);
+      }
+      .opt .check {
+        flex: 0 0 auto;
+        width: 28px; height: 28px;
+        border-radius: 50%;
+        border: 2px solid var(--silver);
+        display: grid;
+        place-items: center;
+        color: transparent;
+        transition: all 0.15s ease;
+      }
+      .opt .check svg { width: 15px; height: 15px; }
+
+      .opt[aria-pressed="true"] {
+        border-color: var(--sapphire);
+        background: linear-gradient(180deg, var(--sapphire-tint), var(--card) 130%);
+      }
+      .opt[aria-pressed="true"] .check {
+        background: var(--sapphire);
+        border-color: var(--sapphire);
+        color: #fff;
+      }
+      .opt[aria-pressed="true"] .price { color: var(--gold); }
+
+      /* Featured package */
+      .opt.featured {
+        border-color: var(--gold);
+        background: linear-gradient(180deg, var(--gold-soft), var(--card) 120%);
+        padding-top: 20px;
+        position: relative;
+      }
+      .opt.featured .icon { background: var(--gold-soft); color: var(--gold); border: 1px solid var(--gold-bright); }
+      .opt.featured .name { font-size: 1.2rem; }
+      .opt.featured .price { color: var(--gold); font-size: 1.25rem; }
+      .opt.featured[aria-pressed="true"] {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 2px var(--gold-bright), var(--shadow);
+        background: linear-gradient(180deg, var(--gold-soft), var(--sapphire-tint) 160%);
+      }
+      .opt.featured[aria-pressed="true"] .check { background: var(--gold); border-color: var(--gold); }
+      .tag {
+        position: absolute;
+        top: -11px; left: 16px;
+        background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+        color: #241a02;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 4px 11px;
+        border-radius: 999px;
+      }
+      .featured-wrap { margin-top: 10px; }
+
+      .picked-note {
+        margin: 16px 2px 0;
+        font-size: 0.95rem;
+        color: var(--ink-soft);
+        min-height: 1.4em;
+      }
+      .picked-note strong { color: var(--sapphire-deep); }
+
+      /* ---------- Glam setup toggle ---------- */
+      .setup {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        font-size: 0.88rem;
+        color: var(--ink-soft);
+      }
+      .setup .setup-tag {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--silver);
+      }
+      .switch-wrap { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+      .switch-wrap input {
+        appearance: none;
+        -webkit-appearance: none;
+        flex: 0 0 auto;
+        width: 40px; height: 23px;
+        margin: 0;
+        border: none;
+        border-radius: 999px;
+        background: var(--line);
+        position: relative;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+      .switch-wrap input::after {
+        content: "";
+        position: absolute;
+        top: 2.5px; left: 3px;
+        width: 18px; height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        transition: transform 0.15s ease;
+      }
+      .switch-wrap input:checked { background: var(--sapphire); }
+      .switch-wrap input:checked::after { transform: translateX(16px); }
+      .switch-wrap input:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; }
+
+      /* ---------- Expandable detail fields ---------- */
+      .details {
+        display: none;
+        gap: 12px;
+        background: var(--card);
+        border: 1.5px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: var(--shadow-card);
+      }
+      .details.show { display: grid; }
+      .featured-wrap .details { margin-top: 10px; }
+      .details .helper { margin: 0; font-size: 0.92rem; font-weight: 600; color: var(--sapphire-deep); }
+      .dfield label { display: block; font-weight: 600; font-size: 0.95rem; margin-bottom: 6px; }
+      .dfield input[type="text"] {
+        width: 100%;
+        font: inherit;
+        font-size: 1.02rem;
+        color: var(--ink);
+        background: var(--bg);
+        border: 1.5px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 14px;
+        min-height: 52px;
+      }
+      .dfield input[type="text"]::placeholder { color: var(--silver); }
+      .dfield input[type="text"]:focus {
+        outline: none;
+        border-color: var(--sapphire);
+        box-shadow: 0 0 0 3px var(--sapphire-tint);
+      }
+      .dfield .uploadbtn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        font-size: 0.98rem;
+        color: var(--sapphire-deep);
+        background: var(--sapphire-tint);
+        border: 1.5px solid var(--sapphire);
+        border-radius: 12px;
+        padding: 12px 16px;
+        min-height: 50px;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .fileinput { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+      .filename { display: block; margin-top: 7px; font-size: 0.88rem; color: var(--ink-soft); }
+      .summary li.detrow { display: block; padding: 0 0 5px 14px; font-size: 0.9rem; color: var(--ink-soft); }
+
+      /* ---------- Sticky total bar ---------- */
+      .totalbar {
+        position: fixed;
+        left: 0; right: 0; bottom: 0;
+        z-index: 20;
+        background: var(--card);
+        border-top: 1px solid var(--line);
+        box-shadow: 0 -8px 28px rgba(29, 79, 158, 0.12);
+        padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+      }
+      .totalbar .inner {
+        max-width: 560px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .totalbar .sum { flex: 0 0 auto; }
+      .totalbar .sum .lbl { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.1; }
+      .totalbar .sum .amt { font-size: 1.55rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+      .totalbar .count { font-size: 0.85rem; color: var(--ink-soft); margin-top: 1px; }
+      .paybtn {
+        flex: 1 1 auto;
+        font: inherit;
+        font-weight: 700;
+        font-size: 1.12rem;
+        color: #241a02;
+        background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+        border: none;
+        border-radius: 14px;
+        min-height: 58px;
+        padding: 12px 18px;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgba(201, 151, 31, 0.35);
+        transition: transform 0.1s ease, filter 0.15s ease, opacity 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .paybtn:active { transform: scale(0.98); }
+      .paybtn:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; }
+      .paybtn:disabled {
+        opacity: 0.45;
+        filter: grayscale(0.4);
+        cursor: not-allowed;
+        box-shadow: none;
+      }
+
+      /* ---------- Confirmation ---------- */
+      .confirm { display: none; padding-top: 34px; }
+      .confirm.show { display: block; }
+      .confirm .badge {
+        width: 74px; height: 74px;
+        margin: 0 auto 16px;
+        border-radius: 50%;
+        background: var(--sapphire-tint);
+        border: 2px solid var(--sapphire);
+        color: var(--sapphire-deep);
+        display: grid;
+        place-items: center;
+      }
+      .confirm .badge svg { width: 36px; height: 36px; }
+      .confirm h2 {
+        font-family: "Playfair Display", Georgia, serif;
+        text-align: center;
+        font-size: 1.8rem;
+        margin: 0 0 6px;
+      }
+      .confirm .sub { text-align: center; color: var(--ink-soft); margin: 0 0 24px; }
+
+      .summary {
+        background: var(--card);
+        border: 1.5px solid var(--line);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: var(--shadow-card);
+        margin-bottom: 22px;
+      }
+      .summary h3 { margin: 0 0 10px; font-size: 1rem; }
+      .summary .rowline { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; font-size: 0.98rem; }
+      .summary .rowline .who { color: var(--ink-soft); }
+      .summary ul { list-style: none; margin: 8px 0 0; padding: 10px 0 0; border-top: 1px dashed var(--line); }
+      .summary li { display: flex; justify-content: space-between; gap: 12px; padding: 4px 0; font-size: 0.98rem; }
+      .summary .grand {
+        display: flex; justify-content: space-between;
+        border-top: 1.5px solid var(--line);
+        margin-top: 10px; padding-top: 10px;
+        font-weight: 700; font-size: 1.1rem;
+      }
+      .summary .grand span:last-child { color: var(--gold); }
+
+      .steps { display: grid; gap: 12px; margin-bottom: 24px; }
+      .step {
+        display: flex; gap: 14px; align-items: flex-start;
+        background: var(--card);
+        border: 1.5px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: var(--shadow-card);
+      }
+      .step .num {
+        flex: 0 0 auto;
+        width: 34px; height: 34px;
+        border-radius: 50%;
+        background: var(--sapphire);
+        color: #fff;
+        font-weight: 700;
+        display: grid; place-items: center;
+        font-size: 1rem;
+      }
+      .step .st { font-weight: 600; font-size: 1.03rem; }
+      .step .sd { color: var(--ink-soft); font-size: 0.94rem; margin-top: 1px; }
+
+      .confirm .actions { display: grid; gap: 10px; }
+      .gopay {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.12rem;
+        color: #241a02;
+        background: linear-gradient(180deg, var(--gold-bright), var(--gold));
+        border-radius: 14px;
+        min-height: 58px;
+        padding: 16px 18px;
+        box-shadow: 0 6px 18px rgba(201, 151, 31, 0.35);
+      }
+      .gopay:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; }
+      .copybtn, .backbtn {
+        font: inherit;
+        font-weight: 600;
+        font-size: 1rem;
+        border-radius: 14px;
+        min-height: 52px;
+        padding: 12px 18px;
+        cursor: pointer;
+        background: var(--card);
+        color: var(--sapphire-deep);
+        border: 1.5px solid var(--sapphire);
+        -webkit-tap-highlight-color: transparent;
+      }
+      .backbtn { border-color: var(--line); color: var(--ink-soft); }
+      .copybtn.copied { background: var(--sapphire-tint); }
+
+      footer {
+        text-align: center;
+        padding: 30px 16px 8px;
+        font-size: 0.85rem;
+        color: var(--silver);
+      }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+
+    <!-- ================= ORDER VIEW ================= -->
+    <div id="orderView">
+      <form id="orderForm" action="https://formsubmit.co/nakeymasi@gmail.com" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="_subject" id="fsSubject" value="New Custom Build Order" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="table" />
+      <header class="hero">
+        <svg class="bfly b1" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M30 30C24 14 10 6 5 12c-4.4 5.3 2 14 12 17-10 2-15 10-11 15 3.4 4.3 15-1 21-10l3-4zm4 0c6-16 20-24 25-18 4.4 5.3-2 14-12 17 10 2 15 10 11 15-3.4 4.3-15-1-21-10l-3-4zM32 26c-1.8 0-3 2.2-3 5v18c0 2 1.3 3 3 3s3-1 3-3V31c0-2.8-1.2-5-3-5z"/></svg>
+        <svg class="bfly b2" viewBox="0 0 64 64" fill="currentColor" aria-hidden="true"><path d="M30 30C24 14 10 6 5 12c-4.4 5.3 2 14 12 17-10 2-15 10-11 15 3.4 4.3 15-1 21-10l3-4zm4 0c6-16 20-24 25-18 4.4 5.3-2 14-12 17 10 2 15 10 11 15-3.4 4.3-15-1-21-10l-3-4zM32 26c-1.8 0-3 2.2-3 5v18c0 2 1.3 3 3 3s3-1 3-3V31c0-2.8-1.2-5-3-5z"/></svg>
+        <span class="live-dot">Live on TikTok</span>
+        <h1>Want this customized<br />for <span class="you">YOU?</span></h1>
+        <p>Pick your customizations below — I'll build them live right now and send you the file.</p>
+      </header>
+
+      <main class="wrap">
+        <div class="setup">
+          <span class="setup-tag">Glam's setup</span>
+          <label class="switch-wrap">
+            <input type="checkbox" id="gameToggle" />
+            <span>Today's build has a game or quiz</span>
+          </label>
+        </div>
+
+        <div class="fields">
+          <div class="field">
+            <label for="buildName">What is Glam building today?</label>
+            <input id="buildName" name="Build name" type="text" placeholder="e.g. dinosaur reading app" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="buyerName">Your name or TikTok handle</label>
+            <input id="buyerName" name="Buyer name/handle" type="text" placeholder="e.g. @yourname" autocomplete="off" />
+          </div>
+        </div>
+
+        <div class="menu-head">
+          <h2>Pick your customizations</h2>
+          <p>Tap to add. Tap again to remove. Prices add up as you go.</p>
+        </div>
+
+        <div class="cards" id="cards" role="group" aria-label="Customization options">
+
+          <div class="featured-wrap">
+            <button type="button" class="opt featured" data-id="brand" data-name="Brand It Mine" data-price="7" aria-pressed="false">
+              <span class="tag">Most Popular</span>
+              <span class="icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5 12 3l9 5.5-9 12.5z"/><path d="M3 8.5h18M12 21 8 8.5l2.5-5M12 21l4-12.5-2.5-5"/></svg>
+              </span>
+              <span class="txt">
+                <span class="name">Brand It Mine</span>
+                <span class="desc" style="display:block">Your brand colors + your hero image swapped in — the build, in YOUR branding. Made for business owners.</span>
+              </span>
+              <span class="price">$7</span>
+              <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+            </button>
+            <div class="details" data-for="brand">
+              <p class="helper">No guessing — give me the exact hex codes.</p>
+              <div class="dfield">
+                <label for="brandPrimary">Primary brand color (hex, e.g. #4A90D9)</label>
+                <input id="brandPrimary" name="Primary brand color" type="text" data-detail="Primary brand color" placeholder="#4A90D9" autocomplete="off" autocapitalize="off" spellcheck="false" />
+              </div>
+              <div class="dfield">
+                <label for="brandSecondary">Secondary brand color (hex)</label>
+                <input id="brandSecondary" name="Secondary brand color" type="text" data-detail="Secondary brand color" placeholder="#A1B2C3" autocomplete="off" autocapitalize="off" spellcheck="false" />
+              </div>
+              <div class="dfield">
+                <label class="uploadbtn" for="brandHero"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0 4 4m-4-4L8 8"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>Upload your hero image</label>
+                <input id="brandHero" name="attachment[]" class="fileinput" type="file" accept="image/*" data-detail="Hero image" />
+                <span class="filename" id="brandHeroName">No image chosen yet</span>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="opt" data-id="name" data-name="Name Swap" data-price="2" aria-pressed="false">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 6h14M5 12h9M5 18h11"/><path d="m16.5 15.5 4.5 4.5M21 15.5 16.5 20" opacity="0"/><path d="M18.2 11.2a1.6 1.6 0 1 1 2.3 2.3l-6.7 6.7-3 .8.8-3z"/></svg>
+            </span>
+            <span class="txt">
+              <span class="name">Name Swap</span>
+              <span class="desc" style="display:block">Names, titles &amp; wording changed to yours — kid's name, business name, your words.</span>
+            </span>
+            <span class="price">$2</span>
+            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          </button>
+
+          <div class="details" data-for="name">
+            <div class="dfield">
+              <label for="nameDetail">What names/text should I change, and to what?</label>
+              <input id="nameDetail" name="Names/text change" type="text" data-detail="Names/text change" placeholder="e.g. Rex → Buster, “Dino Park” → “Mia's World”" autocomplete="off" />
+            </div>
+          </div>
+
+          <button type="button" class="opt" data-id="character" data-name="Character Swap" data-price="3" aria-pressed="false">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="10" r="0.6" fill="currentColor"/><circle cx="15" cy="10" r="0.6" fill="currentColor"/><path d="M8 15c1.2 1.4 2.5 2 4 2s2.8-.6 4-2"/><path d="M12 3a4 4 0 0 1 4 3M12 3a4 4 0 0 0-4 3"/></svg>
+            </span>
+            <span class="txt">
+              <span class="name">Character Swap</span>
+              <span class="desc" style="display:block">Switch the character or mascot — a different dino, a different doll style, your pick.</span>
+            </span>
+            <span class="price">$3</span>
+            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          </button>
+
+          <div class="details" data-for="character">
+            <div class="dfield">
+              <label for="charDetail">Describe the character you want (e.g. purple dinosaur with glasses)</label>
+              <input id="charDetail" name="Character wanted" type="text" data-detail="Character wanted" placeholder="e.g. purple dinosaur with glasses" autocomplete="off" />
+            </div>
+            <div class="dfield">
+              <label class="uploadbtn" for="charImage"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4m0 0 4 4m-4-4L8 8"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>Upload your character image (optional)</label>
+              <input id="charImage" name="attachment[]" class="fileinput" type="file" accept="image/*" data-detail="Character image" />
+              <span class="filename" id="charImageName">No image chosen yet</span>
+            </div>
+          </div>
+
+          <button type="button" class="opt" data-id="color" data-name="Color Refresh" data-price="3" aria-pressed="false">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-.9 2-2 0-.8-.5-1.3-.5-2.1 0-.9.7-1.6 1.7-1.6H17a4 4 0 0 0 4-4c0-4.6-4-8.3-9-8.3z"/><circle cx="7.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="11" cy="7" r="1.1" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8" r="1.1" fill="currentColor" stroke="none"/></svg>
+            </span>
+            <span class="txt">
+              <span class="name">Color Refresh</span>
+              <span class="desc" style="display:block">A whole new color scheme — your colors, your vibe. (Colors only, not full branding.)</span>
+            </span>
+            <span class="price">$3</span>
+            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          </button>
+
+          <div class="details" data-for="color">
+            <div class="dfield">
+              <label for="colorMain">Main color (hex)</label>
+              <input id="colorMain" name="Main color" type="text" data-detail="Main color" placeholder="#4A90D9" autocomplete="off" autocapitalize="off" spellcheck="false" />
+            </div>
+            <div class="dfield">
+              <label for="colorAccent">Accent color (hex)</label>
+              <input id="colorAccent" name="Accent color" type="text" data-detail="Accent color" placeholder="#FFB6C1" autocomplete="off" autocapitalize="off" spellcheck="false" />
+            </div>
+          </div>
+
+          <button type="button" class="opt" data-id="form" data-name="Add a Custom Form" data-price="5" aria-pressed="false">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9.5 4.5V3h5v1.5M9.8 10.5h4.4M9.8 14h4.4M9.8 17.5h2.7"/></svg>
+            </span>
+            <span class="txt">
+              <span class="name">Add a Custom Form</span>
+              <span class="desc" style="display:block">I'll build a custom form (contact, signup, order, quiz — your pick) and add it to today's build.</span>
+            </span>
+            <span class="price">$5</span>
+            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          </button>
+
+          <div class="details" data-for="form">
+            <div class="dfield">
+              <label for="formDetail">What should the form do? List the fields/questions you want (e.g. name, email, favorite color)</label>
+              <input id="formDetail" name="Form should include" type="text" data-detail="Form should include" placeholder="e.g. name, email, favorite color" autocomplete="off" />
+            </div>
+          </div>
+
+          <button type="button" class="opt hidden" data-id="game" data-name="Add a Game" data-price="5" aria-pressed="false">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3.5h4v4h4v4h-4v4h-4v-4H6v-4h4z" transform="rotate(45 12 12)"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg>
+            </span>
+            <span class="txt">
+              <span class="name">Add a Game</span>
+              <span class="desc" style="display:block">One new game or quiz round added to the build.</span>
+            </span>
+            <span class="price">$5</span>
+            <span class="check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg></span>
+          </button>
+
+          <div class="details" data-for="game">
+            <div class="dfield">
+              <label for="gameDetail">What kind of game? (e.g. memory match, word scramble, quiz)</label>
+              <input id="gameDetail" name="Game wanted" type="text" data-detail="Game wanted" placeholder="e.g. memory match" autocomplete="off" />
+            </div>
+          </div>
+        </div>
+
+        <p class="picked-note" id="pickedNote">Nothing picked yet — tap a card above to start your order.</p>
+
+        <footer>made with ♥ by Indigo, Glam's AI assistant</footer>
+      </main>
+      </form>
+    </div>
+
+    <!-- ================= CONFIRMATION VIEW ================= -->
+    <div class="confirm wrap" id="confirmView" role="region" aria-label="Order confirmation">
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.5 9.5 18.5 20.5 6"/></svg>
+      </div>
+      <h2>You're in!</h2>
+      <p class="sub">Here's what happens next:</p>
+
+      <div class="summary" id="summaryBox"></div>
+
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <div>
+            <div class="st">Complete your payment</div>
+            <div class="sd">Tap the gold button below to pay securely on Payhip.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <div>
+            <div class="st">Your order was emailed to Glam</div>
+            <div class="sd">Your full order — picks, details, and images — just went straight to Glam's inbox. You can also paste it in the live chat with the copy button below.</div>
+          </div>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <div>
+            <div class="st">Watch Glam build it live</div>
+            <div class="sd">She'll make your changes on the spot, then send you your finished file.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="gopay" id="goPay" href="https://payhip.com/b/54LoK" target="_blank" rel="noopener">Pay <span id="goPayAmt">$0</span> on Payhip</a>
+        <button type="button" class="copybtn" id="copyBtn">Copy my order for the live chat</button>
+        <button type="button" class="backbtn" id="backBtn">← Change my picks</button>
+      </div>
+
+      <footer>made with ♥ by Indigo, Glam's AI assistant</footer>
+    </div>
+
+    <!-- ================= STICKY TOTAL BAR ================= -->
+    <div class="totalbar" id="totalBar">
+      <div class="inner">
+        <div class="sum">
+          <div class="lbl">Your total</div>
+          <div class="amt" id="totalAmt">$0</div>
+          <div class="count" id="totalCount">0 customizations</div>
+        </div>
+        <button type="submit" form="orderForm" class="paybtn" id="payBtn" disabled>Pay $0 Now</button>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var selected = {}; // id -> {name, price}
+        var totalAmt = document.getElementById('totalAmt');
+        var totalCount = document.getElementById('totalCount');
+        var payBtn = document.getElementById('payBtn');
+        var pickedNote = document.getElementById('pickedNote');
+        var buildInput = document.getElementById('buildName');
+        var buyerInput = document.getElementById('buyerName');
+        var orderView = document.getElementById('orderView');
+        var confirmView = document.getElementById('confirmView');
+        var totalBar = document.getElementById('totalBar');
+        var summaryBox = document.getElementById('summaryBox');
+        var goPayAmt = document.getElementById('goPayAmt');
+        var copyBtn = document.getElementById('copyBtn');
+
+        function totals() {
+          var total = 0, count = 0;
+          for (var k in selected) { total += selected[k].price; count++; }
+          return { total: total, count: count };
+        }
+
+        function refresh() {
+          var t = totals();
+          totalAmt.textContent = '$' + t.total;
+          totalCount.textContent = t.count + (t.count === 1 ? ' customization' : ' customizations');
+          payBtn.textContent = 'Pay $' + t.total + ' Now';
+          payBtn.disabled = t.count === 0;
+          if (t.count === 0) {
+            pickedNote.textContent = 'Nothing picked yet — tap a card above to start your order.';
+          } else {
+            var names = [];
+            for (var k in selected) names.push(selected[k].name);
+            pickedNote.innerHTML = '';
+            var strong = document.createElement('strong');
+            strong.textContent = 'Your picks: ';
+            pickedNote.appendChild(strong);
+            pickedNote.appendChild(document.createTextNode(names.join(' · ')));
+          }
+        }
+
+        function detailsEl(id) {
+          return document.querySelector('.details[data-for="' + id + '"]');
+        }
+
+        function collectDetails(id) {
+          var det = detailsEl(id);
+          var out = [];
+          if (!det) return out;
+          var inputs = det.querySelectorAll('[data-detail]');
+          inputs.forEach(function (inp) {
+            if (inp.type === 'file') {
+              if (inp.files && inp.files.length > 0) {
+                out.push(inp.getAttribute('data-detail') + ': ' + inp.files[0].name);
+              }
+            } else {
+              var v = inp.value.trim();
+              if (v) out.push(inp.getAttribute('data-detail') + ': ' + v);
+            }
+          });
+          return out;
+        }
+
+        var buttons = document.querySelectorAll('.opt');
+        buttons.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var id = btn.getAttribute('data-id');
+            var on = btn.getAttribute('aria-pressed') === 'true';
+            var det = detailsEl(id);
+            if (on) {
+              btn.setAttribute('aria-pressed', 'false');
+              delete selected[id];
+              if (det) det.classList.remove('show');
+            } else {
+              btn.setAttribute('aria-pressed', 'true');
+              selected[id] = {
+                name: btn.getAttribute('data-name'),
+                price: parseInt(btn.getAttribute('data-price'), 10)
+              };
+              if (det) det.classList.add('show');
+            }
+            refresh();
+          });
+        });
+
+        function orderText() {
+          var t = totals();
+          var lines = [];
+          var build = buildInput.value.trim();
+          var buyer = buyerInput.value.trim();
+          if (buyer) lines.push('CUSTOM ORDER from ' + buyer);
+          else lines.push('CUSTOM ORDER');
+          if (build) lines.push('Today\'s build: ' + build);
+          lines.push('I picked:');
+          for (var k in selected) {
+            lines.push('- ' + selected[k].name + ' ($' + selected[k].price + ')');
+            var dets = collectDetails(k);
+            for (var i = 0; i < dets.length; i++) lines.push('    ' + dets[i]);
+          }
+          lines.push('Total: $' + t.total);
+          return lines.join('\n');
+        }
+
+        function sendOrderEmail(t) {
+          try {
+            var fd = new FormData();
+            var buyer = buyerInput.value.trim();
+            var build = buildInput.value.trim();
+            fd.append('_subject', 'New Custom Build Order - ' + (buyer || 'Live Buyer'));
+            fd.append('_captcha', 'false');
+            fd.append('_template', 'table');
+            if (build) fd.append("Today's build", build);
+            if (buyer) fd.append('Buyer name/handle', buyer);
+            for (var k in selected) {
+              fd.append('Package: ' + selected[k].name, '$' + selected[k].price);
+              var det = detailsEl(k);
+              if (!det) continue;
+              var inputs = det.querySelectorAll('[data-detail]');
+              inputs.forEach(function (inp) {
+                if (inp.type === 'file') {
+                  if (inp.files && inp.files.length > 0) {
+                    fd.append('attachment[]', inp.files[0]);
+                  }
+                } else {
+                  var v = inp.value.trim();
+                  if (v) fd.append(inp.getAttribute('data-detail'), v);
+                }
+              });
+            }
+            fd.append('Order summary', orderText());
+            fd.append('Total price', '$' + t.total);
+            fetch('https://formsubmit.co/ajax/nakeymasi@gmail.com', {
+              method: 'POST',
+              body: fd
+            }).catch(function () {});
+          } catch (e) {}
+        }
+
+        var orderForm = document.getElementById('orderForm');
+        orderForm.addEventListener('submit', function (ev) {
+          ev.preventDefault();
+          var t = totals();
+          if (t.count === 0) return;
+
+          var fsSubject = document.getElementById('fsSubject');
+          if (fsSubject) {
+            fsSubject.value = 'New Custom Build Order - ' + (buyerInput.value.trim() || 'Live Buyer');
+          }
+          sendOrderEmail(t);
+
+          var build = buildInput.value.trim();
+          var buyer = buyerInput.value.trim();
+
+          var html = '<h3>Your order</h3>';
+          if (build) html += '<div class="rowline"><span class="who">Today\'s build</span><span>' + escapeHtml(build) + '</span></div>';
+          if (buyer) html += '<div class="rowline"><span class="who">For</span><span>' + escapeHtml(buyer) + '</span></div>';
+          html += '<ul>';
+          for (var k in selected) {
+            html += '<li><span>' + escapeHtml(selected[k].name) + '</span><span>$' + selected[k].price + '</span></li>';
+            var dets = collectDetails(k);
+            for (var i = 0; i < dets.length; i++) {
+              html += '<li class="detrow">' + escapeHtml(dets[i]) + '</li>';
+            }
+          }
+          html += '</ul>';
+          html += '<div class="grand"><span>Total</span><span>$' + t.total + '</span></div>';
+          summaryBox.innerHTML = html;
+          goPayAmt.textContent = '$' + t.total;
+
+          orderView.classList.add('hidden');
+          totalBar.classList.add('hidden');
+          confirmView.classList.add('show');
+          window.scrollTo(0, 0);
+        });
+
+        document.getElementById('backBtn').addEventListener('click', function () {
+          confirmView.classList.remove('show');
+          orderView.classList.remove('hidden');
+          totalBar.classList.remove('hidden');
+          window.scrollTo(0, 0);
+        });
+
+        copyBtn.addEventListener('click', function () {
+          var text = orderText();
+          function done() {
+            copyBtn.textContent = 'Copied! Paste it in the live chat ✓';
+            copyBtn.classList.add('copied');
+            setTimeout(function () {
+              copyBtn.textContent = 'Copy my order for the live chat';
+              copyBtn.classList.remove('copied');
+            }, 2600);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
+          } else {
+            fallbackCopy(text); done();
+          }
+        });
+
+        function fallbackCopy(text) {
+          var ta = document.createElement('textarea');
+          ta.value = text;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+
+        /* Glam's setup: Add a Game only shows when today's build has one */
+        var gameToggle = document.getElementById('gameToggle');
+        var gameBtn = document.querySelector('.opt[data-id="game"]');
+        var gameDet = detailsEl('game');
+        function applyGameVisibility() {
+          var show = gameToggle.checked;
+          if (gameBtn) gameBtn.classList.toggle('hidden', !show);
+          if (gameDet) gameDet.classList.toggle('hidden', !show);
+          if (!show && selected['game']) {
+            delete selected['game'];
+            if (gameBtn) gameBtn.setAttribute('aria-pressed', 'false');
+            if (gameDet) gameDet.classList.remove('show');
+            refresh();
+          }
+        }
+        gameToggle.addEventListener('change', applyGameVisibility);
+        applyGameVisibility();
+
+        /* Uploads: show the picked file name */
+        var heroInput = document.getElementById('brandHero');
+        var heroName = document.getElementById('brandHeroName');
+        heroInput.addEventListener('change', function () {
+          if (heroInput.files && heroInput.files.length > 0) {
+            heroName.textContent = 'Picked: ' + heroInput.files[0].name;
+          } else {
+            heroName.textContent = 'No image chosen yet';
+          }
+        });
+
+        var charInput = document.getElementById('charImage');
+        var charName = document.getElementById('charImageName');
+        charInput.addEventListener('change', function () {
+          if (charInput.files && charInput.files.length > 0) {
+            charName.textContent = 'Picked: ' + charInput.files[0].name;
+          } else {
+            charName.textContent = 'No image chosen yet';
+          }
+        });
+
+        function escapeHtml(s) {
+          return s.replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+          });
+        }
+
+        refresh();
+      })();
+    </script>
+  </body>
+</html>
