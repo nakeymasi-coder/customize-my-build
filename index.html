@@ -126,6 +126,32 @@
         50% { translate: 0 -7px; }
       }
 
+      /* ---------- Disclaimer notice ---------- */
+      .notice {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        margin-top: 20px;
+        background: var(--gold-soft);
+        border: 1.5px solid var(--gold-bright);
+        border-radius: 14px;
+        padding: 15px 16px;
+        box-shadow: var(--shadow-card);
+      }
+      .notice svg {
+        flex: 0 0 auto;
+        width: 22px; height: 22px;
+        margin-top: 1px;
+        color: var(--gold);
+      }
+      .notice p {
+        margin: 0;
+        font-size: 1.02rem;
+        font-weight: 600;
+        line-height: 1.4;
+        color: var(--ink);
+      }
+
       /* ---------- Fields ---------- */
       .fields { margin-top: 22px; display: grid; gap: 14px; }
       .field label {
@@ -311,7 +337,6 @@
       .switch-wrap input:checked { background: var(--sapphire); }
       .switch-wrap input:checked::after { transform: translateX(16px); }
       .switch-wrap input:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; }
-
       /* ---------- Expandable detail fields ---------- */
       .details {
         display: none;
@@ -488,7 +513,7 @@
         box-shadow: 0 6px 18px rgba(201, 151, 31, 0.35);
       }
       .gopay:focus-visible { outline: 3px solid var(--sapphire); outline-offset: 2px; }
-      .copybtn, .backbtn {
+      .backbtn {
         font: inherit;
         font-weight: 600;
         font-size: 1rem;
@@ -502,7 +527,6 @@
         -webkit-tap-highlight-color: transparent;
       }
       .backbtn { border-color: var(--line); color: var(--ink-soft); }
-      .copybtn.copied { background: var(--sapphire-tint); }
 
       footer {
         text-align: center;
@@ -721,7 +745,7 @@
           <span class="num">2</span>
           <div>
             <div class="st">Your order was emailed to Glam</div>
-            <div class="sd">Your full order — picks, details, and images — just went straight to Glam's inbox. You can also paste it in the live chat with the copy button below.</div>
+            <div class="sd">Your full order — picks, details, and images — just went straight to Glam's inbox.</div>
           </div>
         </div>
         <div class="step">
@@ -733,9 +757,13 @@
         </div>
       </div>
 
+      <div class="notice" role="note" style="margin: 0 0 18px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><circle cx="12" cy="8" r="0.6" fill="currentColor" stroke="none"/></svg>
+        <p>You're purchasing a customized version of today's live demo — not the full generator, not the source code.</p>
+      </div>
+
       <div class="actions">
-        <a class="gopay" id="goPay" href="https://payhip.com/b/54LoK" target="_blank" rel="noopener">Pay <span id="goPayAmt">$0</span> on Payhip</a>
-        <button type="button" class="copybtn" id="copyBtn">Copy my order for the live chat</button>
+        <a class="gopay" id="goPay" href="https://payhip.com/b/XDuZi" target="_blank" rel="noopener">Pay <span id="goPayAmt">$0</span> on Payhip</a>
         <button type="button" class="backbtn" id="backBtn">← Change my picks</button>
       </div>
 
@@ -768,7 +796,6 @@
         var totalBar = document.getElementById('totalBar');
         var summaryBox = document.getElementById('summaryBox');
         var goPayAmt = document.getElementById('goPayAmt');
-        var copyBtn = document.getElementById('copyBtn');
 
         function totals() {
           var total = 0, count = 0;
@@ -935,34 +962,6 @@
           totalBar.classList.remove('hidden');
           window.scrollTo(0, 0);
         });
-
-        copyBtn.addEventListener('click', function () {
-          var text = orderText();
-          function done() {
-            copyBtn.textContent = 'Copied! Paste it in the live chat ✓';
-            copyBtn.classList.add('copied');
-            setTimeout(function () {
-              copyBtn.textContent = 'Copy my order for the live chat';
-              copyBtn.classList.remove('copied');
-            }, 2600);
-          }
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text); done(); });
-          } else {
-            fallbackCopy(text); done();
-          }
-        });
-
-        function fallbackCopy(text) {
-          var ta = document.createElement('textarea');
-          ta.value = text;
-          ta.style.position = 'fixed';
-          ta.style.opacity = '0';
-          document.body.appendChild(ta);
-          ta.select();
-          try { document.execCommand('copy'); } catch (e) {}
-          document.body.removeChild(ta);
-        }
 
         /* Glam's setup: Add a Game only shows when today's build has one */
         var gameToggle = document.getElementById('gameToggle');
